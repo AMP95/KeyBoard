@@ -84,8 +84,8 @@
                     Grid.ColumnSpan="2" 
                     Margin="1" 
                     Content="Start"
-                    IsEnabled="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsChecked, Converter={StaticResource boolConverter}}"
-                    IsChecked="{Binding ElementName=stop, Path=IsChecked,Converter={StaticResource boolConverter}}"
+                    IsEnabled="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsChecked}"
+                    IsChecked="{Binding IsStop}"
                     Command="{Binding StartCommand, UpdateSourceTrigger=PropertyChanged}"
                     />
             <ToggleButton x:Name="stop" Grid.Column="4"
@@ -93,9 +93,9 @@
                     Grid.Row="1"
                     Content="Stop"
                     Margin="1"
-                    IsEnabled="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsChecked, Converter={StaticResource boolConverter}}"
-                    IsChecked="True"
-                          Command="{Binding StopCommand, UpdateSourceTrigger=PropertyChanged}">
+                    IsEnabled="{Binding RelativeSource={RelativeSource Mode=Self}, Path=IsChecked}"
+                    IsChecked="{Binding IsStop, Converter={StaticResource boolConverter}}"
+                    Command="{Binding StopCommand, UpdateSourceTrigger=PropertyChanged}">
             </ToggleButton>
         </Grid>
         <TextBox x:Name="exampleTB" 

@@ -26,6 +26,13 @@ namespace KeyBoard.ViewModel
         string _inputText;
         DateTime _start;
         void Notify(string name) => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        public bool IsStop {
+            get => _isStop;
+            set {
+                _isStop = value;
+                Notify("IsStop");
+            }
+        }
         public int Speed
         {
             get { return _speed; }
@@ -92,6 +99,7 @@ namespace KeyBoard.ViewModel
             _model = new KeyModel();
             Difficulty = 6;
             Buttons = new ObservableCollection<KeyButton>(_model.Buttons);
+            IsStop = true;
         }
         void AddInput(KeyButton button) {
             InputText = InputText.Remove(InputText.Length - 1);
@@ -103,7 +111,7 @@ namespace KeyBoard.ViewModel
                     SelectedLength--;
                 }
             }
-            else if(button.Symbol == "Space" ||
+            else if (button.Symbol == "Space" ||
                 button.Symbol == "Enter" ||
                 button.Symbol.Length == 1)
             {
@@ -120,6 +128,10 @@ namespace KeyBoard.ViewModel
                 Speed = (int)(SelectedLength / sec * 60);
             }
             InputText += "|";
+            if (SelectedLength == _example.Length)
+            {
+                IsStop = true;
+            }
         }
         void KeyDown(KeyEventArgs e) {
             foreach (KeyButton button in Buttons) {
@@ -229,11 +241,12 @@ namespace KeyBoard.ViewModel
                 return new ButtonCommand(
                     (param) => {
                         Example = _model.GenerateString(Difficulty, IsCaseSensitive);
+                        SelectedLength = 0;
                         InputText = "|";
                         Fails = 0;
                         Speed = 0;
                         _start = DateTime.Now;
-                        _isStop = false;
+                        IsStop = false;
                     }
                     );
             }
@@ -244,7 +257,7 @@ namespace KeyBoard.ViewModel
             {
                 return new ButtonCommand(
                     (param) => {
-                        _isStop = true;
+                        IsStop = true;
                     }
                     );
             }
